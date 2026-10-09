@@ -1,0 +1,56 @@
+
+{% extends 'base.html' %}
+{% block title %}Home | TurfZone{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <span class="eyebrow">YOUR GAME STARTS HERE</span>
+        <h1>Find Your Perfect<br><span>Turf. Play Your Game.</span></h1>
+        <p>Discover nearby turfs, check facilities and prices, and book your favourite playing ground easily.</p>
+        <div class="hero-buttons">
+            <a href="{% url 'turf_list' %}" class="btn btn-primary">Explore Turfs</a>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'register' %}" class="btn btn-outline">Create Account</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="hero-ball">⚽</div>
+</section>
+
+<section class="section">
+    <div class="section-heading">
+        <span class="eyebrow">WHY TURFZONE?</span>
+        <h2>Everything You Need to Play</h2>
+        <p>A simple and convenient way to manage your turf bookings.</p>
+    </div>
+
+    <div class="feature-grid">
+        <article class="feature-card">
+            <div class="feature-icon">📍</div>
+            <h3>Find Turfs</h3>
+            <p>Explore available turfs and find a location that suits your team.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon">📅</div>
+            <h3>Easy Booking</h3>
+            <p>Select your date and time and submit your booking request online.</p>
+        </article>
+        <article class="feature-card">
+            <div class="feature-icon">💬</div>
+            <h3>Turf Assistant</h3>
+            <p>Ask questions about turf prices, locations, facilities and timings.</p>
+        </article>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div>
+        <span class="eyebrow">READY TO PLAY?</span>
+        <h2>Your Next Match Is One Booking Away</h2>
+        <p>Browse the available turfs and plan your game today.</p>
+    </div>
+    <a href="{% url 'turf_list' %}" class="btn btn-light">Browse Turfs →</a>
+</section>
+{% endblock %}
+

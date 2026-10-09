@@ -1,0 +1,63 @@
+
+{% extends 'base.html' %}
+{% block title %}Dashboard | TurfZone{% endblock %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="dashboard-welcome">
+        <div>
+            <span class="eyebrow">{{ dashboard_role }} DASHBOARD</span>
+            <h1>Hello, {{ user.first_name|default:user.username }}! 👋</h1>
+            <p>Welcome to your TurfZone dashboard.</p>
+        </div>
+        <div class="profile-avatar">{{ user.username|first|upper }}</div>
+    </div>
+
+    <div class="dashboard-grid">
+        {% if dashboard_role == 'Vendor' %}
+            <a href="{% url 'turf_create' %}" class="dashboard-card">
+                <span class="dashboard-card-icon">➕</span>
+                <h3>Add New Turf</h3>
+                <p>Add your turf details, price, facilities and timings.</p>
+                <span class="card-link">Add Turf →</span>
+            </a>
+
+            <a href="{% url 'turf_list' %}" class="dashboard-card">
+                <span class="dashboard-card-icon">🏟️</span>
+                <h3>Browse Turfs</h3>
+                <p>View turf listings on the website.</p>
+                <span class="card-link">View Turfs →</span>
+            </a>
+
+            <a href="{% url 'vendor_bookings' %}" class="dashboard-card">
+                <span class="dashboard-card-icon">📋</span>
+                <h3>Manage Bookings</h3>
+                <p>Review booking requests and update their status.</p>
+                <span class="card-link">Manage →</span>
+            </a>
+        {% else %}
+            <a href="{% url 'turf_list' %}" class="dashboard-card">
+                <span class="dashboard-card-icon">🔎</span>
+                <h3>Find a Turf</h3>
+                <p>Search available turfs by name, location or facilities.</p>
+                <span class="card-link">Explore →</span>
+            </a>
+
+            <a href="{% url 'my_bookings' %}" class="dashboard-card">
+                <span class="dashboard-card-icon">📅</span>
+                <h3>My Bookings</h3>
+                <p>Check your booking requests and their status.</p>
+                <span class="card-link">View Bookings →</span>
+            </a>
+
+            <a href="{% url 'chatbot:chatbot' %}" class="dashboard-card">
+                <span class="dashboard-card-icon">💬</span>
+                <h3>Turf Assistant</h3>
+                <p>Get answers to turf-related questions.</p>
+                <span class="card-link">Ask a Question →</span>
+            </a>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+

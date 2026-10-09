@@ -1,0 +1,66 @@
+
+{% extends 'base.html' %}
+{% block title %}My Bookings | TurfZone{% endblock %}
+
+{% block content %}
+<section class="page-banner">
+    <span class="eyebrow">YOUR ACTIVITY</span>
+    <h1>My Bookings</h1>
+    <p>View and manage your turf booking requests.</p>
+</section>
+
+<section class="section">
+    {% if bookings %}
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Turf</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>
+                            <strong>{{ booking.turf.name }}</strong>
+                            <small class="table-subtitle">{{ booking.turf.location }}</small>
+                        </td>
+                        <td>{{ booking.booking_date|date:"d M Y" }}</td>
+                        <td>{{ booking.start_time|time:"g:i A" }} – {{ booking.end_time|time:"g:i A" }}</td>
+                        <td>₹{{ booking.total_price }}</td>
+                        <td>
+                            <span class="status-badge status-{{ booking.status|lower }}">
+                                {{ booking.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if booking.status != 'CANCELLED' %}
+                            <form method="post" action="{% url 'cancel_booking' booking.id %}" onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-small">Cancel</button>
+                            </form>
+                            {% else %}
+                                <span class="muted">No action</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📅</div>
+            <h2>No bookings yet</h2>
+            <p>Your bookings will appear here after you submit a request.</p>
+            <a href="{% url 'turf_list' %}" class="btn btn-primary">Explore Turfs</a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
+

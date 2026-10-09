@@ -1,0 +1,78 @@
+
+{% extends 'base.html' %}
+{% block title %}Explore Turfs | TurfZone{% endblock %}
+
+{% block content %}
+<section class="page-banner">
+    <span class="eyebrow">FIND YOUR PLAYING GROUND</span>
+    <h1>Explore Available Turfs</h1>
+    <p>Find a turf that matches your location, budget and playing needs.</p>
+</section>
+
+<section class="section">
+    <form method="get" class="search-form">
+        <input type="search" name="q" value="{{ query }}" placeholder="Search by turf name, location or facilities...">
+        <button type="submit" class="btn btn-primary">Search</button>
+        {% if query %}
+            <a href="{% url 'turf_list' %}" class="btn btn-outline-dark">Clear</a>
+        {% endif %}
+    </form>
+
+    {% if page_obj.object_list %}
+        <div class="turf-grid">
+            {% for turf in page_obj %}
+                <article class="turf-card">
+                    <a href="{% url 'turf_detail' pk=turf.pk %}" class="turf-image">
+                        {% if turf.image %}
+                            <img src="{{ turf.image.url }}" alt="{{ turf.name }}">
+                        {% else %}
+                            <div class="image-placeholder">⚽</div>
+                        {% endif %}
+                        <span class="available-badge">Available</span>
+                    </a>
+
+                    <div class="turf-card-body">
+                        <p class="turf-location">📍 {{ turf.location }}</p>
+                        <h3><a href="{% url 'turf_detail' pk=turf.pk %}">{{ turf.name }}</a></h3>
+                        <p class="turf-description">{{ turf.description|truncatewords:18 }}</p>
+
+                        <div class="turf-price">
+                            <strong>₹{{ turf.price_per_hour }}</strong>
+                            <span>/ hour</span>
+                        </div>
+
+                        <a href="{% url 'turf_detail' pk=turf.pk %}" class="btn btn-primary btn-full">View Details →</a>
+
+                        {% if user.is_authenticated and user.role == 'VENDOR' and turf.vendor_id == user.id or user.is_superuser %}
+                            <div class="card-actions">
+                                <a href="{% url 'turf_update' pk=turf.pk %}">Edit</a>
+                                <a href="{% url 'turf_delete' pk=turf.pk %}">Delete</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.has_other_pages %}
+            <nav class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?q={{ query|urlencode }}&page={{ page_obj.previous_page_number }}">← Previous</a>
+                {% endif %}
+                <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                {% if page_obj.has_next %}
+                    <a href="?q={{ query|urlencode }}&page={{ page_obj.next_page_number }}">Next →</a>
+                {% endif %}
+            </nav>
+        {% endif %}
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">🏟️</div>
+            <h2>No turfs found</h2>
+            <p>{% if query %}Try another search term.{% else %}There are no available turf listings at the moment.{% endif %}</p>
+            {% if query %}<a href="{% url 'turf_list' %}" class="btn btn-primary">Show All Turfs</a>{% endif %}
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
+

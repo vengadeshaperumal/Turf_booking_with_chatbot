@@ -1,0 +1,21 @@
+
+{% extends 'base.html' %}
+{% block title %}Delete Turf | TurfZone{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-card">
+        <div class="auth-icon">⚠️</div>
+        <h1>Delete Turf?</h1>
+        <p>Are you sure you want to delete <strong>{{ turf.name }}</strong>?</p>
+        <p class="muted">This action cannot be undone.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-full">Yes, Delete Turf</button>
+        </form>
+        <a href="{% url 'turf_detail' pk=turf.pk %}" class="btn btn-outline-dark btn-full cancel-button">Cancel</a>
+    </div>
+</section>
+{% endblock %}
+
