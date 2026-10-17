@@ -4,7 +4,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = "django-insecure-turf-booking-development-key-change-before-deployment"
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "turf-booking-with-chatbot.vercel.app",
